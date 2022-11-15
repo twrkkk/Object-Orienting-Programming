@@ -1,6 +1,6 @@
 #include "Triad.h"
 
-Triad::Triad(const int p1, const int p2, const int p3)
+Triad::Triad(int p1, int p2, int p3)
 {
 	first = p1;
 	second = p2;
@@ -37,9 +37,36 @@ int Triad::get_third() const
 	return third;
 }
 
-int Triad::compare(const Triad& another)
+//int Triad::compare(const Triad& another)
+//{
+//	return (first > another.get_first() ? 1 : first < another.get_first() ? -1 :
+//		second>another.get_second() ? 1 : second<another.get_second() ? -1 :
+//		third>another.get_third() ? 1 : third < another.get_third() ? -1 : 0);
+//}
+
+bool Triad::operator==(Triad& triad)
 {
-	return (first > another.get_first() ? 1 : first < another.get_first() ? -1 :
-		second>another.get_second() ? 1 : second<another.get_second() ? -1 :
-		third>another.get_third() ? 1 : third < another.get_third() ? -1 : 0);
+	return first == triad.get_first() && second == triad.get_second() && third == triad.get_third();
+}
+
+bool Triad::operator!=(Triad& triad)
+{
+	return first != triad.get_first() || second != triad.get_second() || third != triad.get_third();
+}
+
+std::ostream& operator<<(std::ostream& stream, const Triad& triad)
+{
+	stream << "first value: " << triad.get_first() << " second value: " << triad.get_second() << " third value: " << triad.get_third() << '\n';
+	return stream;
+}
+
+std::istream& operator>>(std::istream& stream, Triad& triad)
+{
+	int f, s, t;
+	stream >> f >> s >> t;
+	triad.set_first(f);
+	triad.set_second(s);
+	triad.set_third(t);
+
+	return stream;
 }
