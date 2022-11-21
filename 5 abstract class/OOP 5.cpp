@@ -4,9 +4,9 @@
 
 int main()
 {
-    Ellipse ellipse(1, 2, 3, 4);
-    ellipse.print();
+    Function* e = new Ellipse(2, 4);
+    std::cout << e->print(e->calculate(1)) << '\n';
 
-    Hyperbola hyperbola(4, 3, 2, 1);
-    hyperbola.print();
+    Function* h = new Hyperbola(5, 6);
+    std::cout << h->print(h->calculate(6)) << '\n';
 }

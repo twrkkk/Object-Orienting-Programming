@@ -1,9 +1,11 @@
 #pragma once
-
+#include <string>
 
 class Function
 {
+private:
 public:
-	virtual float calculate(float x) = 0;
-	virtual void print() = 0;
+	float a, b;
+	virtual int calculate(float x) = 0;
+	virtual std::string print(int) = 0;
 };
