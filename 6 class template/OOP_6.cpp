@@ -7,15 +7,16 @@ using std::cin;
 int main()
 {
 	std::ifstream file("data.txt");
-	if (file)
+	std::ifstream file2("data2.txt");
+	if (file && file2)
 	{
 		DLIST<int> list(file);
-		cout << list.to_string() << '\n';
-		
-		//DLIST<int> list(file);
-		//cout<<list;
-		//NODE<double> a(5.00001);
-		/*ptrNODE<double> b = new NODE<double>(7);
-		cout << b->info;*/
+		DLIST<int> list2(file2);
+		DLIST<int> list3 = list.merge(list2);
+		DLIST<int> list4 = list.merge_sorted(list2);
+		cout << "LIST 1: " << list.to_string();
+		cout << "LIST 2: " << list2.to_string();
+		cout << "LIST 1 + 2: " << list3.to_string();
+		cout << "LIST 1 + 2 SORTED: " << list4.to_string();
 	}
 }

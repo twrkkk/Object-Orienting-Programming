@@ -33,14 +33,21 @@ public:
 		while (!file.eof())
 		{
 			T elem; file >> elem;
-			place = find_place(begin, elem);
+			/*place = find_place(begin, elem);
 			if (place)
 				add_before(place, elem);
 			else
-				add_after(end, elem);
+				add_after(end, elem);*/
+			add_after(end, elem);
 		}
 		file.close();
 	};
+	~DLIST()
+	{
+		while (size != 0)
+			Delete(begin);
+	};
+
 	void first_node(T elem)
 	{
 		begin = new NODE(elem);
@@ -75,11 +82,60 @@ public:
 			ptr->next->prev = p;
 		ptr->next = p;
 	};
-	~DLIST()
+
+	DLIST merge(const DLIST& another_list)
 	{
-		while (!empty())
-			Delete(begin);
+		static DLIST<T> new_list;
+		new_list.first_node(begin->info);
+		ptrNODE beg = begin->next;
+		while (beg != end->next)
+		{
+			new_list.add_after(new_list.get_end(), beg->info);
+			beg = beg->next;
+		}
+
+		beg = another_list.get_begin();
+		while (beg != another_list.get_end()->next)
+		{
+			new_list.add_after(new_list.get_end(), beg->info);
+			beg = beg->next;
+		}
+
+		return new_list;
+	}
+	DLIST merge_sorted(const DLIST& another_list)
+	{
+		static DLIST<T> new_list;
+		new_list.first_node(begin->info);
+		ptrNODE first = get_begin()->next, second = another_list.get_begin();
+		while (first && second)
+		{
+			T elem;
+			if (first->info > second->info)
+			{
+				elem = second->info;
+				second = second->next;
+			}
+			else
+			{
+				elem = first->info;
+				first = first->next;
+			}
+			new_list.add_after(new_list.get_end(), elem);
+		}
+		while (first)
+		{
+			new_list.add_after(new_list.get_end(), first->info);
+			first = first->next;
+		}
+		while (second)
+		{
+			new_list.add_after(new_list.get_end(), second->info);
+			second = second->next;
+		}
+		return new_list;
 	};
+
 	ptrNODE& Delete(ptrNODE& ptr)
 	{
 		ptrNODE p = ptr;
@@ -87,7 +143,7 @@ public:
 		{
 			begin = p->next;
 			ptr = begin;
-			if (p->next)
+			if (p && p->next && size != 0)
 				p->next->prev = nullptr;
 		}
 		else
@@ -143,10 +199,33 @@ public:
 		size--;
 		return a;
 	};
+
 	ptrNODE get_begin() const
 	{
 		return begin;
 	}
+	ptrNODE get_end() const
+	{
+		return end;
+	}
+	size_t get_size() const
+	{
+		return size;
+	}
+
+	void set_begin(ptrNODE _begin)
+	{
+		begin = _begin;
+	}
+	void set_end(ptrNODE _end)
+	{
+		end = _end;
+	}
+	void set_size(size_t _size)
+	{
+		size = _size;
+	}
+
 	std::string to_string() const
 	{
 		std::string result;
